@@ -5,11 +5,13 @@ from models import PipelineData
 
 app = FastAPI()
 
+# This is to allow CORS
 origins = [
     "http://localhost:3000",
     "localhost:3000",
 ]
 
+# Apply CORS configuration to the app
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -23,16 +25,18 @@ def read_root():
     return {'Ping': 'Pong'}
 
 
-# is dag would be empty string then it is dag otherwise it is the node which is causing the cycle
+# Pipeline Parse endpoint which finds if the nodes and edges make a DAG or not
+# dag_bfs and dag_dfs returns empty string if it is a DAG else it returns the node where cycle is detected
 @app.post('/pipelines/parse', tags=['pipelines'])
 def parse_pipeline(pipeline: PipelineData):
     nodes, edges = pipeline.nodes, pipeline.edges
-    is_dag_bfs = dag_bfs(nodes, edges)
-    is_dag_dfs = dag_dfs(nodes, edges)
+    # is_dag= dag_bfs(nodes, edges)
+    is_dag_str= dag_dfs(nodes, edges)
+
+    is_dag = True if is_dag_str == "" else False
     
     return {
         'num_nodes': len(nodes),
         'num_edges': len(edges),
-        'is_dag_bfs' : is_dag_bfs,
-        'is_dag_dfs' : is_dag_dfs
+        'is_dag' : is_dag,
     }

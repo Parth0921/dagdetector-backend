@@ -1,5 +1,9 @@
 from models import Edge
 
+# These are helper functions to check if the graph is DAG or not
+# Returns node at which cycle is detected or empty string
+
+# Recursive helper for dag_dfs
 def is_cyclic_dfs(node, adjaceny_list, visited, pathVisited):
     visited[node] = True
     pathVisited[node] = True
@@ -17,8 +21,26 @@ def is_cyclic_dfs(node, adjaceny_list, visited, pathVisited):
     pathVisited[node] = False
     return ""
 
+# DFS implementation to check DAG
+def dag_dfs(nodes: list[str], edges: list[Edge]):
+    adjaceny_list, _ = build_adjacency_and_indegree_list(nodes, edges)
 
-# Kahn's algorithm for topological sorting
+    visited = {}
+    pathVisited = {}
+
+    for node in nodes:
+        visited[node] = False
+        pathVisited[node] = False
+
+    for node in nodes:
+        if not visited[node]:
+            result = is_cyclic_dfs(node, adjaceny_list, visited, pathVisited)
+            if result != "":
+               return result 
+
+    return ""
+
+# Kahn's algorithm to check DAG --> slight modification of topological sort --> BFS
 def dag_bfs(nodes, edges):
     adjaceny_list, indegree_list = build_adjacency_and_indegree_list(nodes, edges)
 
@@ -48,6 +70,7 @@ def dag_bfs(nodes, edges):
     return cycle_node
 
 
+# Helper function which builds adjacency list and indegree list
 def build_adjacency_and_indegree_list(nodes, edges):
     adjaceny_list = {}
     indegree_list = {}
@@ -61,20 +84,4 @@ def build_adjacency_and_indegree_list(nodes, edges):
 
     return adjaceny_list, indegree_list
 
-def dag_dfs(nodes: list[str], edges: list[Edge]):
-    adjaceny_list, _ = build_adjacency_and_indegree_list(nodes, edges)
 
-    visited = {}
-    pathVisited = {}
-
-    for node in nodes:
-        visited[node] = False
-        pathVisited[node] = False
-
-    for node in nodes:
-        if not visited[node]:
-            result = is_cyclic_dfs(node, adjaceny_list, visited, pathVisited)
-            if result != "":
-               return result 
-
-    return ""
