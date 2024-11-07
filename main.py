@@ -9,6 +9,7 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "localhost:3000",
+    "http://http://ec2-13-235-167-7.ap-south-1.compute.amazonaws.com/"
 ]
 
 # Apply CORS configuration to the app
