@@ -1,8 +1,4 @@
-# VectorShift Assessment - Parth Rathod
-
-This project serves as the backend for VectorShift Assessment's take home assignment PART-4.
-
----
+# DAG Detector Backend
 
 I will guide you through the files and my approach to building the backend. I have kept the backend fairly simple only focusing on the crucial aspects.
 
@@ -12,7 +8,7 @@ I will guide you through the files and my approach to building the backend. I ha
 ## Run Locally
 I recommend creating a virtual env and using it to run the project
 
-1. Extract the code
+1. clone the repository
 2. `pip install fastapi uvicorn` 
 3. `uvicorn main:app --reload`
 
@@ -29,7 +25,7 @@ There are only 3 files here is a brief description of each of them.
 
 ---
 
-### Explanation for PART-4
+### Approach
 
 To detect if the graph formed is **Directed Acyclic Graph** or not, I already knew that the edges were directed, the only thing my algorithm should check was cycle detection in a directed graph. This could be done using DFS and BFS. I explain my implementation using both below!
 
